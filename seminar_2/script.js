@@ -8,25 +8,25 @@
 // Створіть новий екземпляр Shape під назвою triangle, з назвою triangle, 3 сторонами та довжиною сторони 3.
 // Викликаємо triangle.calcPerimeter(), щоб перевірити, чи працює нормально.
 
-class Shape {
-  constructor(name, sides, sidelength) {
-    this.name = name;
-    this.sides = sides;
-    this.sidelength = sidelength;
-  }
-  calcPerimeter() {
-    const perimeter = this.sidelength * this.sides;
-    console.log(perimeter);
-  }
-}
+// class Shape {
+//   constructor(name, sides, sidelength) {
+//     this.name = name;
+//     this.sides = sides;
+//     this.sidelength = sidelength;
+//   }
+//   calcPerimeter() {
+//     const perimeter = this.sidelength * this.sides;
+//     console.log(perimeter);
+//   }
+// }
 
-let square = new Shape("square", 4, 5);
+// let square = new Shape("square", 4, 5);
 
-square.calcPerimeter();
+// square.calcPerimeter();
 
-let triangle = new Shape("triangle", 3, 3);
+// let triangle = new Shape("triangle", 3, 3);
 
-triangle.calcPerimeter();
+// triangle.calcPerimeter();
 
 // -------------------------------------------------------------------------------
 
@@ -71,12 +71,69 @@ triangle.calcPerimeter();
 // let clock = new Clock({template: 'h:m:s'});
 // clock.start();
 
+class Clock {
+  // constructor(options) {
+  constructor({ template }) {
+    this.template = template;
+    // this.template = options.template;
+  }
+
+  render() {
+    let date = new Date();
+
+    let hours = date.getHours();
+    if (hours < 10) hours = "0" + hours;
+
+    let mins = date.getMinutes();
+    if (mins < 10) mins = "0" + mins;
+
+    let secs = date.getSeconds();
+    if (secs < 10) secs = "0" + secs;
+
+    console.log(this.template);
+
+    let output = this.template
+      .replace("h", hours)
+      .replace("m", mins)
+      .replace("s", secs);
+
+    console.log(output);
+  }
+  stop() {
+    clearInterval(this.timer);
+  }
+
+  start() {
+    this.render();
+    this.timer = setInterval(() => this.render(), 1000);
+  }
+}
+
+// let clock = new Clock({ template: "h:m:s" });
+// clock.start();
 // -------------------------------------------------------------------------------
 
 // 3.
 // Ми маємо клас Clock. Зараз він виводить час кожну секунду
 // Створіть новий клас ExtendedClock, який успадковуватиметься від Clock і додайте параметр precision – кількість мілісекунд між «тіками». Встановіть значення 1000 (1 секунда) за замовчуванням.
 
+class ExtendedClock extends Clock {
+  constructor(options) {
+    super(options);
+    this.precision = options.precision || 1000;
+  }
+  start() {
+    this.render();
+    this.timer = setInterval(() => this.render(), this.precision);
+  }
+}
+
+let extClock = new ExtendedClock({
+  template: "h:m:s",
+  // precision: 5000,
+});
+
+extClock.start();
 // -------------------------------------------------------------------------------
 
 // 4.
